@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Donation - Ganpati Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-om"></i>
+                <span>Ganpati Tracker</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="donation.html" class="nav-link active">Donate</a>
+                </li>
+                <li class="nav-item">
+                    <a href="expenses.html" class="nav-link">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a href="receipts.html" class="nav-link">Receipts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-hand-holding-heart"></i> Make a Donation</h1>
+            <p>Your contribution helps us celebrate Ganpati Utsav with devotion and grandeur</p>
+        </div>
+    </section>
+
+    <!-- Donation Form Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="form-container">
+                <div class="donation-info">
+                    <h2>Why Donate?</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <i class="fas fa-temple"></i>
+                            <h3>Decoration & Setup</h3>
+                            <p>Beautiful decorations and mandap setup for Lord Ganpati</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-music"></i>
+                            <h3>Cultural Programs</h3>
+                            <p>Traditional music, dance, and cultural performances</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-utensils"></i>
+                            <h3>Prasad & Food</h3>
+                            <p>Distribution of prasad and community meals</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-hands-helping"></i>
+                            <h3>Community Service</h3>
+                            <p>Supporting local community and charitable activities</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="donation-form-section">
+                    <h2>Donation Details</h2>
+                    <form id="donation-form" class="donation-form" data-validate="donation">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" required minlength="2" maxlength="100" pattern="[a-zA-Z\s\.]+" title="Please enter a valid name (letters, spaces, and dots only)">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" maxlength="255" title="Please enter a valid email address">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" pattern="[\+]?[\d\s\-\(\)]{10,15}" title="Please enter a valid phone number (10-15 digits)">
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Donation Amount (₹) *</label>
+                                <input type="number" id="amount" name="amount" min="1" max="1000000" step="0.01" required title="Please enter an amount between ₹1 and ₹10,00,000">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="wing">Wing *</label>
+                                <select id="wing" name="wing" required onchange="updateFlatOptions()" title="Please select your wing">
+                                    <option value="">Select Wing</option>
+                                    <option value="A">Wing A</option>
+                                    <option value="B">Wing B</option>
+                                    <option value="C">Wing C</option>
+                                    <option value="D">Wing D</option>
+                                    <option value="E">Wing E</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="floor">Floor *</label>
+                                <select id="floor" name="floor" required onchange="updateFlatOptions()" title="Please select your floor">
+                                    <option value="">Select Floor</option>
+                                    <option value="0">Ground Floor</option>
+                                    <option value="1">1st Floor</option>
+                                    <option value="2">2nd Floor</option>
+                                    <option value="3">3rd Floor</option>
+                                    <option value="4">4th Floor</option>
+                                    <option value="5">5th Floor</option>
+                                    <option value="6">6th Floor</option>
+                                    <option value="7">7th Floor</option>
+                                    <option value="8">8th Floor</option>
+                                    <option value="9">9th Floor</option>
+                                    <option value="10">10th Floor</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="flat">Flat Number *</label>
+                                <select id="flat" name="flat" required title="Please select your flat number">
+                                    <option value="">First select Wing and Floor</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="flatDisplay">Complete Address</label>
+                                <input type="text" id="flatDisplay" name="flatDisplay" readonly placeholder="Complete flat address will appear here">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="paymentMode">Payment Mode *</label>
+                                <select id="paymentMode" name="paymentMode" required title="Please select your payment method">
+                                    <option value="">Select Payment Mode</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="UPI">UPI</option>
+                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="Cheque">Cheque</option>
+                                    <option value="Online">Online Payment</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Date *</label>
+                                <input type="date" id="date" name="date" required max="" title="Please select the donation date">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="note">Note/Message (Optional)</label>
+                            <textarea id="note" name="note" maxlength="500" placeholder="Any special message or dedication..."></textarea>
+                        </div>
+
+                        <div class="quick-amounts">
+                            <label>Quick Amount Selection:</label>
+                            <div class="amount-buttons">
+                                <button type="button" class="amount-btn" onclick="setAmount(51)">₹51</button>
+                                <button type="button" class="amount-btn" onclick="setAmount(101)">₹101</button>
+                                <button type="button" class="amount-btn" onclick="setAmount(501)">₹501</button>
+                                <button type="button" class="amount-btn" onclick="setAmount(1001)">₹1001</button>
+                                <button type="button" class="amount-btn" onclick="setAmount(2001)">₹2001</button>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-heart"></i> Submit Donation
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="fas fa-undo"></i> Reset Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="payment-info">
+                <h2>Payment Information</h2>
+                <div class="payment-methods">
+                    <div class="payment-method">
+                        <h3><i class="fas fa-mobile-alt"></i> UPI Payment</h3>
+                        <p><strong>UPI ID:</strong> ganpati@upi</p>
+                        <p><strong>QR Code:</strong> Scan the QR code for quick payment</p>
+                    </div>
+                    <div class="payment-method">
+                        <h3><i class="fas fa-university"></i> Bank Transfer</h3>
+                        <p><strong>Account Name:</strong> Ganpati Utsav Committee</p>
+                        <p><strong>Account Number:</strong> 1234567890</p>
+                        <p><strong>IFSC Code:</strong> BANK0001234</p>
+                        <p><strong>Bank:</strong> State Bank of India</p>
+                    </div>
+                    <div class="payment-method">
+                        <h3><i class="fas fa-money-bill"></i> Cash Payment</h3>
+                        <p>Visit our collection center or contact our volunteers</p>
+                        <p><strong>Address:</strong> Ganpati Mandal, Main Street</p>
+                        <p><strong>Timing:</strong> 9:00 AM - 9:00 PM</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Donations Database -->
+            <div class="recent-donations-section">
+                <div class="section-header">
+                    <h2>Live Donations Database</h2>
+                    <div class="section-actions">
+                        <button onclick="refreshDonationsTable()" class="btn btn-primary">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button onclick="exportToExcel('donations')" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Export to Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Live Donations Table -->
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>S.No.</th>
+                                <th>Name</th>
+                                <th>Wing & Flat</th>
+                                <th>Amount</th>
+                                <th>Payment Mode</th>
+                                <th>Date</th>
+                                <th>Receipt ID</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donations-table-body">
+                            <tr>
+                                <td colspan="8" class="text-center">No donations recorded yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="recent-donations-list" class="donations-list" style="display: none;">
+                    <!-- Recent donations will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-om"></i> Ganpati Tracker</h3>
+                    <p>Celebrating Lord Ganpati with devotion, transparency, and community spirit.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="donation.html">Make Donation</a></li>
+                        <li><a href="expenses.html">View Expenses</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-envelope"></i> info@ganpatitracker.com</p>
+                    <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ganpati Tracker. Made with ❤️ for Lord Ganpati</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <!-- Enhanced JavaScript with Data Management -->
+    <script src="js/dataManager.js"></script>
+    <script src="js/formValidator.js"></script>
+    <script src="js/analyticsEngine.js"></script>
+    <script src="js/dataMigration.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Set today's date as default and max date
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.valueAsDate = new Date();
+        dateInput.setAttribute('max', today);
+        
+        // Set amount function
+        function setAmount(amount) {
+            document.getElementById('amount').value = amount;
+        }
+        
+        // Update flat options and display address
+        function updateFlatOptions() {
+            const wing = document.getElementById('wing').value;
+            const floor = document.getElementById('floor').value;
+            const flatSelect = document.getElementById('flat');
+            const flatDisplay = document.getElementById('flatDisplay');
+            
+            // Clear previous options
+            flatSelect.innerHTML = '<option value="">Select Flat Number</option>';
+            
+            if (wing && floor) {
+                // Generate flat numbers based on floor
+                const floorNum = floor === '0' ? '0' : floor;
+                const flats = [
+                    `${floorNum}01`,
+                    `${floorNum}02`,
+                    `${floorNum}03`,
+                    `${floorNum}04`
+                ];
+                
+                // Add individual flat options
+                flats.forEach(flatNum => {
+                    const option = document.createElement('option');
+                    option.value = flatNum;
+                    option.textContent = `Flat ${flatNum}`;
+                    flatSelect.appendChild(option);
+                });
+                
+                // Add combined flat options
+                const combinedOptions = [
+                    { value: `${floorNum}01+${floorNum}02`, text: `Flat ${floorNum}01+${floorNum}02 (Combined)` },
+                    { value: `${floorNum}02+${floorNum}03`, text: `Flat ${floorNum}02+${floorNum}03 (Combined)` },
+                    { value: `${floorNum}03+${floorNum}04`, text: `Flat ${floorNum}03+${floorNum}04 (Combined)` },
+                    { value: `${floorNum}01+${floorNum}02+${floorNum}03`, text: `Flat ${floorNum}01+${floorNum}02+${floorNum}03 (Combined)` },
+                    { value: `${floorNum}02+${floorNum}03+${floorNum}04`, text: `Flat ${floorNum}02+${floorNum}03+${floorNum}04 (Combined)` },
+                    { value: `${floorNum}01+${floorNum}02+${floorNum}03+${floorNum}04`, text: `Entire Floor ${floorNum} (All Flats)` }
+                ];
+                
+                combinedOptions.forEach(combo => {
+                    const option = document.createElement('option');
+                    option.value = combo.value;
+                    option.textContent = combo.text;
+                    flatSelect.appendChild(option);
+                });
+                
+                // Update display when flat is selected
+                flatSelect.addEventListener('change', function() {
+                    if (this.value) {
+                        flatDisplay.value = `Wing ${wing} - ${this.value}`;
+                    } else {
+                        flatDisplay.value = '';
+                    }
+                });
+            }
+        }
+        
+        // Display donations table and refresh functions
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshDonationsTable();
+            // Auto-refresh every 5 seconds
+            setInterval(refreshDonationsTable, 5000);
+        });
+        
+        // Refresh donations table
+        function refreshDonationsTable() {
+            const currentDonations = window.donations || [];
+            const tableBody = document.getElementById('donations-table-body');
+            
+            if (currentDonations.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">No donations recorded yet</td></tr>';
+                return;
+            }
+            
+            tableBody.innerHTML = currentDonations.map((donation, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${donation.name}</td>
+                    <td>${donation.flatDisplay || 'N/A'}</td>
+                    <td>₹${parseFloat(donation.amount).toLocaleString('en-IN')}</td>
+                    <td>${donation.paymentMode}</td>
+                    <td>${donation.date}</td>
+                    <td>${donation.id}</td>
+                    <td>
+                        <button onclick="downloadReceipt('${donation.id}')" class="btn btn-sm btn-primary">
+                            <i class="fas fa-download"></i> Receipt
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // Display recent donations list (kept for compatibility)
+        function displayRecentDonationsList() {
+            refreshDonationsTable();
+        }
+    </script>
+
+    <style>
+        .donation-info {
+            margin-bottom: 3rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        /* Live Database Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .table th {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .info-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-top: 4px solid #ff6b35;
+        }
+        
+        .info-item i {
+            font-size: 2.5rem;
+            color: #ff6b35;
+            margin-bottom: 1rem;
+        }
+        
+        .info-item h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .donation-form-section {
+            margin-bottom: 3rem;
+        }
+        
+        .quick-amounts {
+            margin: 2rem 0;
+        }
+        
+        .quick-amounts label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .amount-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .amount-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #ff6b35;
+            background: white;
+            color: #ff6b35;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .amount-btn:hover {
+            background: #ff6b35;
+            color: white;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .payment-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 3rem 0;
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .payment-method {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b35;
+        }
+        
+        .payment-method h3 {
+            color: #ff6b35;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-method p {
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+        
+        .recent-donations-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 3rem 0;
+        }
+        
+        .donations-list {
+            margin-top: 2rem;
+        }
+        
+        .donation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #ff6b35;
+        }
+        
+        .donor-info h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .donation-amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+        
+        .donation-details p {
+            margin-bottom: 0.25rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .donation-details i {
+            margin-right: 0.5rem;
+            color: #ff6b35;
+        }
+        
+        @media (max-width: 768px) {
+            .donation-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .amount-buttons {
+                justify-content: center;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</body>
+</html>

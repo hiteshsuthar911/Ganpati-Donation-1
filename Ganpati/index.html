@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganpati Donation & Expense Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-om"></i>
+                <span>Ganpati Tracker</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="donation.html" class="nav-link">Donate</a>
+                </li>
+                <li class="nav-item">
+                    <a href="expenses.html" class="nav-link">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a href="receipts.html" class="nav-link">Receipts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>गणपति बप्पा मोरया</h1>
+            <h2>Ganpati Donation & Expense Tracker</h2>
+            <p>Join us in celebrating Lord Ganpati with devotion and transparency</p>
+            <div class="hero-buttons">
+                <a href="donation.html" class="btn btn-primary">Make Donation</a>
+                <a href="expenses.html" class="btn btn-secondary">View Expenses</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <i class="fas fa-om hero-icon"></i>
+        </div>
+    </section>
+
+    <!-- Analytics Dashboard -->
+    <section class="analytics">
+        <div class="container">
+            <h2>Financial Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-donations">₹0</h3>
+                        <p>Total Donations</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-expenses">₹0</h3>
+                        <p>Total Expenses</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="balance">₹0</h3>
+                        <p>Balance</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-donors">0</h3>
+                        <p>Total Donors</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Our Services</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-donate"></i>
+                    </div>
+                    <h3>Easy Donations</h3>
+                    <p>Simple and secure donation process with multiple payment options</p>
+                    <a href="donation.html" class="feature-link">Donate Now</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Expense Tracking</h3>
+                    <p>Transparent tracking of all expenses for complete accountability</p>
+                    <a href="expenses.html" class="feature-link">View Expenses</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>Digital Receipts</h3>
+                    <p>Download donation receipts in PDF or Excel format instantly</p>
+                    <a href="receipts.html" class="feature-link">Get Receipt</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Activities -->
+    <section class="recent-activities">
+        <div class="container">
+            <h2>Recent Activities</h2>
+            <div class="activities-container">
+                <div class="activity-section">
+                    <h3>Latest Donations</h3>
+                    <div id="recent-donations" class="activity-list">
+                        <p class="no-data">No donations yet</p>
+                    </div>
+                </div>
+                <div class="activity-section">
+                    <h3>Latest Expenses</h3>
+                    <div id="recent-expenses" class="activity-list">
+                        <p class="no-data">No expenses yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-om"></i> Ganpati Tracker</h3>
+                    <p>Celebrating Lord Ganpati with devotion, transparency, and community spirit.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="donation.html">Make Donation</a></li>
+                        <li><a href="expenses.html">View Expenses</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-envelope"></i> info@ganpatitracker.com</p>
+                    <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ganpati Tracker. Made with ❤️ for Lord Ganpati</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced JavaScript with Data Management -->
+    <script src="js/dataManager.js"></script>
+    <script src="js/formValidator.js"></script>
+    <script src="js/analyticsEngine.js"></script>
+    <script src="js/dataMigration.js"></script>
+    <script src="js/main.js"></script>
+    
+    <!-- Analytics Dashboard Button -->
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <button onclick="showAnalyticsDashboard()" class="btn btn-primary" style="border-radius: 50px; padding: 15px 20px; box-shadow: 0 4px 15px rgba(255,107,53,0.3);">
+            <i class="fas fa-chart-line"></i> Analytics
+        </button>
+    </div>
+</body>
+</html>

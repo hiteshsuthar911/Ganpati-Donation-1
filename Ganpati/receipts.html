@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Receipts - Ganpati Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-om"></i>
+                <span>Ganpati Tracker</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="donation.html" class="nav-link">Donate</a>
+                </li>
+                <li class="nav-item">
+                    <a href="expenses.html" class="nav-link">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a href="receipts.html" class="nav-link active">Receipts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-download"></i> Download Receipts</h1>
+            <p>Download your donation receipts in PDF or Excel format</p>
+        </div>
+    </section>
+
+    <!-- Receipt Search Section -->
+    <section class="content-section">
+        <div class="container">
+            <!-- Quick Receipt Download -->
+            <div class="form-container">
+                <h2>Quick Receipt Download</h2>
+                <div class="receipt-search">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="receipt-id">Receipt ID</label>
+                            <input type="text" id="receipt-id" placeholder="Enter your receipt ID (e.g., GP1234567890)">
+                        </div>
+                        <div class="form-group">
+                            <label for="donor-name">Donor Name</label>
+                            <input type="text" id="donor-name" placeholder="Enter donor name">
+                        </div>
+                    </div>
+                    <div class="search-actions">
+                        <button onclick="searchReceipt()" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Search Receipt
+                        </button>
+                        <button onclick="clearSearch()" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Receipt Result -->
+            <div id="receipt-result" class="receipt-result" style="display: none;">
+                <div class="receipt-card">
+                    <div class="receipt-header">
+                        <h3>Receipt Found</h3>
+                        <div class="receipt-actions">
+                            <button onclick="downloadPDF()" class="btn btn-primary">
+                                <i class="fas fa-file-pdf"></i> Download PDF
+                            </button>
+                            <button onclick="downloadExcel()" class="btn btn-secondary">
+                                <i class="fas fa-file-excel"></i> Download Excel
+                            </button>
+                        </div>
+                    </div>
+                    <div id="receipt-details" class="receipt-details">
+                        <!-- Receipt details will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Donations List -->
+            <div class="donations-section">
+                <div class="section-header">
+                    <h2>All Donations</h2>
+                    <div class="section-actions">
+                        <button onclick="exportAllDonations()" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Export All
+                        </button>
+                        <button onclick="refreshDonations()" class="btn btn-secondary">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Donations Filter -->
+                <div class="donations-filter">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="date-from">From Date</label>
+                            <input type="date" id="date-from" onchange="filterDonations()">
+                        </div>
+                        <div class="filter-group">
+                            <label for="date-to">To Date</label>
+                            <input type="date" id="date-to" onchange="filterDonations()">
+                        </div>
+                        <div class="filter-group">
+                            <label for="payment-filter">Payment Mode</label>
+                            <select id="payment-filter" onchange="filterDonations()">
+                                <option value="">All Payment Modes</option>
+                                <option value="Cash">Cash</option>
+                                <option value="UPI">UPI</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="Online">Online Payment</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="amount-filter">Amount Range</label>
+                            <select id="amount-filter" onchange="filterDonations()">
+                                <option value="">All Amounts</option>
+                                <option value="0-100">₹0 - ₹100</option>
+                                <option value="101-500">₹101 - ₹500</option>
+                                <option value="501-1000">₹501 - ₹1000</option>
+                                <option value="1001-5000">₹1001 - ₹5000</option>
+                                <option value="5000+">₹5000+</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Donations Table -->
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Receipt ID</th>
+                                <th>Donor Name</th>
+                                <th>Amount</th>
+                                <th>Payment Mode</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donations-table-body">
+                            <tr>
+                                <td colspan="6" class="text-center">No donations found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Receipt Templates -->
+            <div class="templates-section">
+                <h2>Receipt Templates</h2>
+                <div class="templates-grid">
+                    <div class="template-card">
+                        <div class="template-preview">
+                            <i class="fas fa-file-pdf template-icon"></i>
+                        </div>
+                        <h3>Standard PDF Receipt</h3>
+                        <p>Professional PDF receipt with organization details and donation information</p>
+                        <div class="template-features">
+                            <span class="feature-tag">PDF Format</span>
+                            <span class="feature-tag">Print Ready</span>
+                            <span class="feature-tag">Official</span>
+                        </div>
+                    </div>
+                    <div class="template-card">
+                        <div class="template-preview">
+                            <i class="fas fa-file-excel template-icon"></i>
+                        </div>
+                        <h3>Excel Spreadsheet</h3>
+                        <p>Detailed Excel format for record keeping and accounting purposes</p>
+                        <div class="template-features">
+                            <span class="feature-tag">Excel Format</span>
+                            <span class="feature-tag">Editable</span>
+                            <span class="feature-tag">Data Analysis</span>
+                        </div>
+                    </div>
+                    <div class="template-card">
+                        <div class="template-preview">
+                            <i class="fas fa-file-alt template-icon"></i>
+                        </div>
+                        <h3>Text Receipt</h3>
+                        <p>Simple text format receipt for quick reference and sharing</p>
+                        <div class="template-features">
+                            <span class="feature-tag">Text Format</span>
+                            <span class="feature-tag">Lightweight</span>
+                            <span class="feature-tag">Universal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-om"></i> Ganpati Tracker</h3>
+                    <p>Celebrating Lord Ganpati with devotion, transparency, and community spirit.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="donation.html">Make Donation</a></li>
+                        <li><a href="expenses.html">View Expenses</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-envelope"></i> info@ganpatitracker.com</p>
+                    <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ganpati Tracker. Made with ❤️ for Lord Ganpati</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced JavaScript with Data Management -->
+    <script src="js/dataManager.js"></script>
+    <script src="js/formValidator.js"></script>
+    <script src="js/analyticsEngine.js"></script>
+    <script src="js/dataMigration.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let currentReceipt = null;
+        let filteredDonations = [];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllDonations();
+        });
+
+        // Search receipt
+        function searchReceipt() {
+            const receiptId = document.getElementById('receipt-id').value.trim();
+            const donorName = document.getElementById('donor-name').value.trim();
+            
+            if (!receiptId && !donorName) {
+                showMessage('Please enter either Receipt ID or Donor Name', 'warning');
+                return;
+            }
+            
+            // Use global donations array from main.js
+            const currentDonations = window.donations || [];
+            let foundReceipt = null;
+            
+            if (receiptId) {
+                foundReceipt = currentDonations.find(d => d.id.toLowerCase() === receiptId.toLowerCase());
+            } else if (donorName) {
+                foundReceipt = currentDonations.find(d => d.name.toLowerCase().includes(donorName.toLowerCase()));
+            }
+            
+            if (foundReceipt) {
+                currentReceipt = foundReceipt;
+                displayReceiptResult(foundReceipt);
+            } else {
+                showMessage('Receipt not found. Please check your details.', 'error');
+                hideReceiptResult();
+            }
+        }
+
+        // Display receipt result
+        function displayReceiptResult(receipt) {
+            const resultDiv = document.getElementById('receipt-result');
+            const detailsDiv = document.getElementById('receipt-details');
+            
+            detailsDiv.innerHTML = `
+                <div class="receipt-info">
+                    <div class="info-row">
+                        <span class="info-label">Receipt ID:</span>
+                        <span class="info-value">${receipt.id}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Donor Name:</span>
+                        <span class="info-value">${receipt.name}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Amount:</span>
+                        <span class="info-value amount">₹${parseFloat(receipt.amount).toLocaleString('en-IN')}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Payment Mode:</span>
+                        <span class="info-value">${receipt.paymentMode}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Date:</span>
+                        <span class="info-value">${receipt.date}</span>
+                    </div>
+                    ${receipt.email ? `
+                    <div class="info-row">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">${receipt.email}</span>
+                    </div>
+                    ` : ''}
+                    ${receipt.phone ? `
+                    <div class="info-row">
+                        <span class="info-label">Phone:</span>
+                        <span class="info-value">${receipt.phone}</span>
+                    </div>
+                    ` : ''}
+                    ${receipt.note ? `
+                    <div class="info-row">
+                        <span class="info-label">Note:</span>
+                        <span class="info-value">${receipt.note}</span>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Hide receipt result
+        function hideReceiptResult() {
+            document.getElementById('receipt-result').style.display = 'none';
+            currentReceipt = null;
+        }
+
+        // Clear search
+        function clearSearch() {
+            document.getElementById('receipt-id').value = '';
+            document.getElementById('donor-name').value = '';
+            hideReceiptResult();
+        }
+
+        // Download PDF
+        function downloadPDF() {
+            if (!currentReceipt) {
+                showMessage('No receipt selected', 'error');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Header
+            doc.setFontSize(20);
+            doc.setTextColor(255, 107, 53);
+            doc.text('GANPATI DONATION RECEIPT', 105, 30, { align: 'center' });
+            
+            // Divider
+            doc.setDrawColor(255, 107, 53);
+            doc.setLineWidth(1);
+            doc.line(20, 40, 190, 40);
+            
+            // Receipt details
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            
+            let yPos = 60;
+            const lineHeight = 10;
+            
+            doc.text(`Receipt ID: ${currentReceipt.id}`, 20, yPos);
+            yPos += lineHeight;
+            doc.text(`Date: ${currentReceipt.date}`, 20, yPos);
+            yPos += lineHeight;
+            doc.text(`Time: ${new Date(currentReceipt.timestamp).toLocaleString()}`, 20, yPos);
+            yPos += lineHeight * 2;
+            
+            doc.setFontSize(14);
+            doc.setTextColor(255, 107, 53);
+            doc.text('DONOR DETAILS', 20, yPos);
+            yPos += lineHeight;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Name: ${currentReceipt.name}`, 20, yPos);
+            yPos += lineHeight;
+            if (currentReceipt.email) {
+                doc.text(`Email: ${currentReceipt.email}`, 20, yPos);
+                yPos += lineHeight;
+            }
+            if (currentReceipt.phone) {
+                doc.text(`Phone: ${currentReceipt.phone}`, 20, yPos);
+                yPos += lineHeight;
+            }
+            yPos += lineHeight;
+            
+            doc.setFontSize(14);
+            doc.setTextColor(255, 107, 53);
+            doc.text('DONATION DETAILS', 20, yPos);
+            yPos += lineHeight;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Amount: ₹${parseFloat(currentReceipt.amount).toLocaleString('en-IN')}`, 20, yPos);
+            yPos += lineHeight;
+            doc.text(`Payment Mode: ${currentReceipt.paymentMode}`, 20, yPos);
+            yPos += lineHeight;
+            if (currentReceipt.note) {
+                doc.text(`Note: ${currentReceipt.note}`, 20, yPos);
+                yPos += lineHeight;
+            }
+            yPos += lineHeight * 2;
+            
+            // Footer
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text('Thank you for your generous contribution to Ganpati Utsav!', 105, yPos, { align: 'center' });
+            yPos += lineHeight;
+            doc.text('Ganpati Bappa Morya!', 105, yPos, { align: 'center' });
+            
+            // Save PDF
+            doc.save(`Ganpati_Receipt_${currentReceipt.id}.pdf`);
+            showMessage('PDF receipt downloaded successfully!', 'success');
+        }
+
+        // Download Excel
+        function downloadExcel() {
+            if (!currentReceipt) {
+                showMessage('No receipt selected', 'error');
+                return;
+            }
+
+            const data = [{
+                'Receipt ID': currentReceipt.id,
+                'Donor Name': currentReceipt.name,
+                'Email': currentReceipt.email || '',
+                'Phone': currentReceipt.phone || '',
+                'Amount': currentReceipt.amount,
+                'Payment Mode': currentReceipt.paymentMode,
+                'Date': currentReceipt.date,
+                'Note': currentReceipt.note || '',
+                'Timestamp': new Date(currentReceipt.timestamp).toLocaleString()
+            }];
+
+            const headers = Object.keys(data[0]);
+            const csvContent = [
+                headers.join(','),
+                ...data.map(row => headers.map(header => `"${row[header]}"`).join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Ganpati_Receipt_${currentReceipt.id}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showMessage('Excel receipt downloaded successfully!', 'success');
+        }
+
+        // Load all donations
+        function loadAllDonations() {
+            // Use global donations array from main.js
+            const currentDonations = window.donations || [];
+            filteredDonations = [...currentDonations];
+            displayDonations(filteredDonations);
+        }
+
+        // Display donations
+        function displayDonations(donations) {
+            const tableBody = document.getElementById('donations-table-body');
+            
+            if (donations.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No donations found</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = donations.map(donation => `
+                <tr>
+                    <td>${donation.id}</td>
+                    <td>${donation.name}</td>
+                    <td>₹${parseFloat(donation.amount).toLocaleString('en-IN')}</td>
+                    <td>${donation.paymentMode}</td>
+                    <td>${donation.date}</td>
+                    <td>
+                        <button onclick="downloadIndividualReceipt('${donation.id}')" class="btn btn-sm btn-primary">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Filter donations
+        function filterDonations() {
+            const currentDonations = window.donations || [];
+            const dateFrom = document.getElementById('date-from').value;
+            const dateTo = document.getElementById('date-to').value;
+            const paymentFilter = document.getElementById('payment-filter').value;
+            const amountFilter = document.getElementById('amount-filter').value;
+
+            filteredDonations = currentDonations.filter(donation => {
+                // Date filter
+                if (dateFrom && donation.date < dateFrom) return false;
+                if (dateTo && donation.date > dateTo) return false;
+                
+                // Payment mode filter
+                if (paymentFilter && donation.paymentMode !== paymentFilter) return false;
+                
+                // Amount filter
+                if (amountFilter) {
+                    const amount = parseFloat(donation.amount);
+                    const [min, max] = amountFilter.split('-').map(v => v.replace('+', ''));
+                    if (max) {
+                        if (amount < parseInt(min) || amount > parseInt(max)) return false;
+                    } else {
+                        if (amount < parseInt(min)) return false;
+                    }
+                }
+                
+                return true;
+            });
+
+            displayDonations(filteredDonations);
+        }
+
+        // Download individual receipt
+        function downloadIndividualReceipt(donationId) {
+            const currentDonations = window.donations || [];
+            const donation = currentDonations.find(d => d.id === donationId);
+            
+            if (donation) {
+                currentReceipt = donation;
+                downloadPDF();
+            }
+        }
+
+        // Export all donations
+        function exportAllDonations() {
+            const currentDonations = window.donations || [];
+            const donations = filteredDonations.length > 0 ? filteredDonations : currentDonations;
+            
+            if (donations.length === 0) {
+                showMessage('No donations to export', 'warning');
+                return;
+            }
+
+            const data = donations.map(d => ({
+                'Receipt ID': d.id,
+                'Donor Name': d.name,
+                'Email': d.email || '',
+                'Phone': d.phone || '',
+                'Amount': d.amount,
+                'Payment Mode': d.paymentMode,
+                'Date': d.date,
+                'Note': d.note || '',
+                'Timestamp': new Date(d.timestamp).toLocaleString()
+            }));
+
+            const headers = Object.keys(data[0]);
+            const csvContent = [
+                headers.join(','),
+                ...data.map(row => headers.map(header => `"${row[header]}"`).join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `All_Ganpati_Donations_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showMessage('All donations exported successfully!', 'success');
+        }
+
+        // Refresh donations
+        function refreshDonations() {
+            loadAllDonations();
+            showMessage('Donations list refreshed!', 'success');
+        }
+    </script>
+
+    <style>
+        .receipt-search {
+            margin-bottom: 2rem;
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .receipt-result {
+            margin: 2rem 0;
+        }
+
+        .receipt-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .receipt-header {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .receipt-header h3 {
+            margin: 0;
+        }
+
+        .receipt-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .receipt-details {
+            padding: 2rem;
+        }
+
+        .receipt-info {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .info-value {
+            color: #666;
+        }
+
+        .info-value.amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        .donations-section {
+            margin: 3rem 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .donations-filter {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .templates-section {
+            margin: 3rem 0;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .template-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .template-preview {
+            margin-bottom: 1.5rem;
+        }
+
+        .template-icon {
+            font-size: 4rem;
+            color: #ff6b35;
+        }
+
+        .template-card h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .template-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .template-features {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .feature-tag {
+            background: #f8f9fa;
+            color: #ff6b35;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid #ff6b35;
+        }
+
+        @media (max-width: 768px) {
+            .receipt-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .receipt-actions {
+                flex-direction: column;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .search-actions {
+                flex-direction: column;
+            }
+
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>
